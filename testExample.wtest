@@ -1,9 +1,114 @@
-import example.pepita
+import kinesio.*
+describe "test kinesio parte 1" {
+  const leonardo = new Paciente(
+    edad = 40,
+    dolor = 10,
+    nivelDeFortaleza = 20
+  )
 
-describe "group of tests for pepita" {
+  const milena = new Paciente(
+    edad = 3,
+    dolor = 30,
+    nivelDeFortaleza = 50
+  )
 
-  test "pepita has initial energy" {
-    assert.equals(100, pepita.energy())
+  const bici = new Bici()
+  const magneto = new Magneto()
+  const minitramp = new Minitramp()
+
+  method initialize() {
+    leonardo.cargarRutina([bici, magneto, minitramp])
+    milena.cargarRutina([magneto, bici])
   }
 
+  test "pepita has initial energyLeonardo puede usar los tres aparatos creados, mientras que Milena puede usar sólo el magneto." {
+    assert.that(leonardo.puedeUsar(bici))
+    assert.that(leonardo.puedeUsar(magneto))
+    assert.that(leonardo.puedeUsar(minitramp))
+    assert.that(milena.puedeUsar(magneto))
+  }
+
+  test "Después de usar el magneto una vez, el nivel de dolor de Leonardo baja a 9." {
+    leonardo.usar(magneto)
+    assert.equals(9, leonardo.dolor())
+  }
+
+  test "Después de usar el magneto una vez, el nivel de dolor de Milena baja a 27." {
+    milena.usar(magneto)
+    assert.equals(27, milena.dolor())
+  }
+
+  test "Después de usar la bicicleta una vez, el nivel de dolor de Leonardo baja a 6, y la fortaleza sube a 23." {
+    leonardo.usar(bici)
+    assert.equals(6, leonardo.dolor())
+    assert.equals(23, leonardo.nivelDeFortaleza())
+  }
+
+  test "Después de usar el minitramp una vez, la fortaleza de Leonardo sube a 24." {
+    leonardo.usar(minitramp)
+    assert.equals(24, leonardo.nivelDeFortaleza())
+  }
+
+  test "Leonardo puede hacer la rutina" {
+    assert.that(leonardo.puedeHacerRutina())
+  }
+
+}
+
+describe "tests parte 3" {
+
+  const bici = new Bici()
+  const magneto = new Magneto()
+  const minitramp = new Minitramp()
+
+  const bici2 = new Bici(color = "rojo")
+  const magneto2 = new Magneto(color = "verde")
+
+  const nicolas = new Resistente(
+    edad = 40,
+    dolor = 10,
+    nivelDeFortaleza = 20
+  )
+
+  const victoria = new Caprichoso(
+    edad = 30,
+    dolor = 10,
+    nivelDeFortaleza = 40
+  )
+
+  const julian = new Caprichoso(
+    edad = 20,
+    dolor = 54,
+    nivelDeFortaleza = 50
+  )
+
+  const zoe = new RapidaRec(
+    edad = 50,
+    dolor = 14,
+    nivelDeFortaleza = 40
+  )
+
+  method initialize() {
+    nicolas.cargarRutina([bici, magneto, minitramp])
+    victoria.cargarRutina([bici, magneto, minitramp])
+    julian.cargarRutina([bici2, magneto2, bici])
+    zoe.cargarRutina([bici, magneto, minitramp])
+  }
+
+  test "nicolas puede hacer su rutina" {
+    assert.that(nicolas.puedeHacerRutina())
+    nicolas.realizarRutina()
+    assert.equals(1.8, nicolas.dolor())
+    assert.equals(34, nicolas.nivelDeFortaleza())
+  }
+
+  test "victoria no puede hacer su rutina" {
+    assert.that(not victoria.puedeHacerRutina())
+  }
+
+  test "julian" {
+    assert.that(julian.puedeHacerRutina())
+    assert.equals(29.3, julian.dolor())
+    assert.equals(62, julian.nivelDeFortaleza())
+  }
 }
